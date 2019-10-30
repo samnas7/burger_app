@@ -3,7 +3,7 @@ import React from "react";
 import Logo from "../../Logo/Logo";
 import NavigationItems from "../NavigationItems/NavigationItems";
 import classes from "./SideDrawer.css";
-import Aux from "../../../hoc/Aux";
+import Auxiliary from "../../../hoc/Auxiliary/Auxiliary";
 import Backdrop from "../../UI/Backdrop/Backdrop";
 import DrawerToggle from "../SideDrawer/DrawerToggle/DrawerToggle";
 const sideDrawer = props => {
@@ -13,7 +13,7 @@ const sideDrawer = props => {
     attachedClasses = [classes.SideDrawer, classes.Open];
   }
   return (
-    <Aux>
+    <Auxiliary>
       <Backdrop show={props.open} clicked={props.close} />
       <div className={attachedClasses.join(" ")}>
         <div className={classes.DrawerToggle}>
@@ -27,7 +27,7 @@ const sideDrawer = props => {
           <NavigationItems />
         </nav>
       </div>
-    </Aux>
+    </Auxiliary>
   );
 };
 export default sideDrawer;
