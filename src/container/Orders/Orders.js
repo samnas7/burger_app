@@ -22,7 +22,6 @@ class Orders extends Component {
         this.setState({ loading: false, orders: fecthedOrders });
       })
       .catch(err => {
-        //console.log(err);
         this.setState({ loading: false });
       });
   }
