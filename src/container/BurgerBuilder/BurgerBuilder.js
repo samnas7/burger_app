@@ -5,7 +5,7 @@ import Burger from "../../component/Burger/Burger";
 import BuildControls from "../../component/Burger/BuildControls/BuildControls";
 
 import { connect } from "react-redux";
-import * as actionType from "../../store/actions";
+import * as burgerBuilderActions from "../../store/actions/index";
 
 import Modal from "../../component/UI/Modal/Modal";
 import OrderSummary from "../../component/Burger/OrderSummary/OrderSummary";
@@ -20,20 +20,11 @@ class BurgerBuilder extends Component {
   } */
   state = {
     purchasable: false,
-    purchasing: false,
-    loading: false,
-    error: false
+    purchasing: false
   };
   componentDidMount() {
-    /*  axios
-      .get("/ingredient.json")
-      .then(response => {
-        this.setState({ ingredients: response.data });
-      })
-      .catch(err => {
-        this.setState({ error: true });
-      });*/
-    console.log(this.props);
+    // console.log(this.props.onFecthIngredients());
+    this.props.onFecthIngredients();
   }
   purchaseHandler = () => {
     this.setState({ purchasing: true });
@@ -68,7 +59,7 @@ class BurgerBuilder extends Component {
     }
 
     let orderSummary = null;
-    let burger = this.state.error ? (
+    let burger = this.props.err ? (
       <p>ingredient can't be loaded</p>
     ) : (
       <Spinner />
@@ -97,9 +88,7 @@ class BurgerBuilder extends Component {
         />
       );
     }
-    if (this.state.loading) {
-      orderSummary = <Spinner />;
-    }
+
     return (
       <Auxiliary>
         <Modal
@@ -116,15 +105,17 @@ class BurgerBuilder extends Component {
 const mapStateToProps = state => {
   return {
     ings: state.ingredients,
-    price: state.totalPrice
+    price: state.totalPrice,
+    err: state.error
   };
 };
 const mapDispatchToProps = dispatch => {
   return {
     onIngredientAdded: ingName =>
-      dispatch({ type: actionType.ADD_INGREDIENT, ingredientName: ingName }),
+      dispatch(burgerBuilderActions.addIngredient(ingName)),
     onIngredientRemoved: ingName =>
-      dispatch({ type: actionType.REMOVE_INGREDIENT, ingredientName: ingName })
+      dispatch(burgerBuilderActions.removeIngredient(ingName)),
+    onFecthIngredients: () => dispatch(burgerBuilderActions.fetchIngredients())
   };
 };
 export default connect(
