@@ -62,4 +62,22 @@ export const fetchOrdersStart = () => {
     type: actionTypes.FETCH_ORDERS_START
   };
 };
-export const fetchOrders = () => {};
+export const fetchOrders = () => {
+  return dispatch => {
+    axios
+      .get("/orders.json")
+      .then(res => {
+        const fecthedOrders = [];
+        for (let key in res.data) {
+          fecthedOrders.push({
+            ...res.data[key],
+            id: key
+          });
+        }
+        dispatch(fetchOrdersSuccess(fecthedOrders));
+      })
+      .catch(err => {
+        dispatch(fetchOrdersFail(err));
+      });
+  };
+};
