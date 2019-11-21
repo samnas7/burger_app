@@ -102,6 +102,9 @@ class ContactData extends Component {
     },
     formIsValid: false
   };
+  componentWillMount() {
+    //console.log(this.props.ings);
+  }
   orderHandler = event => {
     event.preventDefault();
 
@@ -114,6 +117,8 @@ class ContactData extends Component {
       price: this.props.price,
       orderData: formData
     };
+    //console.log(order);
+
     this.props.onOrderedBurger(order);
   };
   checkValidation = (value, rules) => {
@@ -146,7 +151,7 @@ class ContactData extends Component {
       updateFormElement.validation
     );
     updatedOrderForm[inputId] = updateFormElement;
-    console.log(updateFormElement);
+    //console.log(updateFormElement);
     let formIsValid = true;
     for (const key in updatedOrderForm) {
       formIsValid = updatedOrderForm[key].valid && formIsValid;
@@ -194,7 +199,7 @@ class ContactData extends Component {
 
 const mapStateToProps = state => {
   return {
-    ing: state.burgerBuilder.ingredients,
+    ings: state.burgerBuilder.ingredients,
     price: state.burgerBuilder.totalPrice,
     loading: state.order.loading
   };

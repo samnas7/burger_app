@@ -30,11 +30,11 @@ export const fetchIngredients = () => {
       .get("/ingredients.json")
       .then(response => {
         dispatch(setIngredients(response.data));
-        console.log(response);
+        //console.log(response);
       })
       .catch(err => {
         dispatch(fetchIngredientsFailed());
-        console.log(err);
+        //console.log(err);
       });
   };
 };
