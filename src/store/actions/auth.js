@@ -6,10 +6,11 @@ export const authStart = () => {
   };
 };
 
-export const authSuccess = authData => {
+export const authSuccess = (token, userId) => {
   return {
     type: actionTypes.AUTH_SUCCESS,
-    authData: authData
+    idToken: token,
+    userId: userId
   };
 };
 export const authFail = error => {
@@ -20,14 +21,14 @@ export const authFail = error => {
 };
 export const auth = (email, password, isSignUp) => {
   return dispatch => {
-    dispatch(authStart());
+    //dispatch(authStart());
     const authData = {
       email: email,
       password: password,
       returnSecureToken: true
     };
     let url =
-      "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyD-kSYkG6yp7dSNdxThyjwT7DkZpE29KCU";
+      "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyD-kSYkG6yp7dSNdxThyjwT7DkZpE29KCU";
     if (!isSignUp) {
       url =
         "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyD-kSYkG6yp7dSNdxThyjwT7DkZpE29KCU";
@@ -36,7 +37,7 @@ export const auth = (email, password, isSignUp) => {
       .post(url, authData)
       .then(res => {
         console.log(res);
-        dispatch(authSuccess(res.data));
+        dispatch(authSuccess(res.data.Idtoken, res.data.localId));
       })
       .catch(err => {
         console.log(err);

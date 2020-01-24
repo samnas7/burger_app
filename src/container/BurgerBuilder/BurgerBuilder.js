@@ -23,7 +23,6 @@ class BurgerBuilder extends Component {
     purchasing: false
   };
   componentDidMount() {
-    // console.log(this.props.onFecthIngredients());
     this.props.onFecthIngredients();
   }
   purchaseHandler = () => {
