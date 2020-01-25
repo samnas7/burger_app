@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import Input from "../../component/UI/Input/Input";
 import Button from "../../component/UI/Button/Button";
+import Spinner from "../../component/UI/Spinner/Spinner";
 import classes from "./Auth.css";
+
 import { connect } from "react-redux";
 import * as actions from "../../store/actions/index";
 class Auth extends Component {
@@ -50,6 +52,8 @@ class Auth extends Component {
       isValid = value.length <= rules.maxLength && isValid;
     }
     if (rules.isEmail) {
+      const pattern = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+      isValid = pattern.test(value) && isValid;
     }
 
     if (rules.isNumeric) {
@@ -80,6 +84,7 @@ class Auth extends Component {
       this.state.controls.password.value,
       this.state.isSignup
     );
+    console.log(this.props.loading);
   };
   switchAuthModeHandler = () => {
     this.setState(prevState => {
@@ -94,7 +99,7 @@ class Auth extends Component {
         config: this.state.controls[key]
       });
     }
-    const form = formElementsArray.map(formElem => (
+    let form = formElementsArray.map(formElem => (
       <Input
         key={formElem.id}
         elementType={formElem.config.elementType}
@@ -106,8 +111,16 @@ class Auth extends Component {
         changed={event => this.inputChangedHandler(event, formElem.id)}
       />
     ));
+    if (this.props.loading) {
+      form = <Spinner />;
+    }
+    let errMessage = null;
+    if (this.props.error) {
+      errMessage = <p>{this.props.error.message}</p>;
+    }
     return (
       <div className={classes.Auth}>
+        {errMessage}
         <form onSubmit={this.submitHandler}>
           {form}
           <Button btnType="Success">Submit</Button>
@@ -119,6 +132,13 @@ class Auth extends Component {
     );
   }
 }
+const mapStateToProps = state => {
+  return {
+    loading: state.auth.loading,
+    error: state.auth.error
+  };
+};
+//videio 17 /310
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -126,4 +146,4 @@ const mapDispatchToProps = dispatch => {
       dispatch(actions.auth(email, password, isSignup))
   };
 };
-export default connect(null, mapDispatchToProps)(Auth);
+export default connect(mapStateToProps, mapDispatchToProps)(Auth);
